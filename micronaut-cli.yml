@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: com.adverity
+---
+testFramework: spock
+sourceLanguage: groovy
