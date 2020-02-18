@@ -8,6 +8,12 @@ In this simple [micronaut](https://micronaut.io/)-[groovy](http://groovy-lang.or
 the [Spock Framework](http://spockframework.org/) to test the
 `com.adverity.person.PersonRepositoryImpl` class.
 
+You can run the specification using:
+
+```bash
+$ ./gradlew test
+```
+
 The class `com.adverity.person.PersonRepositoryImpl` implements the 
 interface `com.adverity.person.PersonRepository` and has only two methods.
 
