@@ -11,7 +11,7 @@ the [Spock Framework](http://spockframework.org/) to test the
 The class `com.adverity.person.PersonRepositoryImpl` implements the 
 interface `com.adverity.person.PersonRepository` and has only two methods.
 
-- `void addPerson()`
+- `void addPerson(String name)`
 
   Inserts a new row into the persons table of a [PostgreSQL](https://www.postgresql.org/) database.
 
