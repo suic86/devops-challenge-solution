@@ -21,7 +21,7 @@ interface `com.adverity.person.PersonRepository` and has only two methods.
 
 
 Furthermore, the specification `com.adverity.person.PersonRepositorySpec` 
-contains only one relevant test. In this integration test, 100 people are
+contains only one relevant test. In this integration test, 100 persons are
 successively stored into the database. 
 After each insertion it is checked whether the correct
 number of people have been saved.
