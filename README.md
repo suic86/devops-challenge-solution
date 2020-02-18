@@ -28,11 +28,11 @@ number of people have been saved.
 
 ## Problem
 
-In its current state, the specification can only be executed once.
-When the specification is executed a second time, 
+In its current state, the test can only be executed once.
+When the test is executed a second time, 
 the test would return an error because there already are persons in the database from
 the previous run.
-Therefore, the number of persons in the specification would no longer match.
+Therefore, the number of persons in the test would no longer match.
 
 ## Goal
 
