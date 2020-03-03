@@ -51,4 +51,21 @@ class PersonRepositorySpec extends Specification {
         where:
         i << (1..100)
     }
+
+    @Unroll
+    def "Cleanup database"() {
+        given:
+        String url = "jdbc:postgresql://localhost/test"
+        Properties props = new Properties()
+        props.setProperty("user", "test")
+        props.setProperty("password", "test")
+        Connection conn = DriverManager.getConnection(url, props)
+
+        Statement stmt = conn.createStatement()
+        stmt.execute("DROP TABLE IF EXISTS persons")
+        conn.close()
+
+        expect:
+        true
+    }
 }
