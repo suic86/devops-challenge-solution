@@ -6,6 +6,7 @@ import io.micronaut.test.annotation.MicronautTest
 import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Unroll
+import spock.lang.Shared
 
 import javax.inject.Inject
 import java.sql.Connection
@@ -16,21 +17,28 @@ import java.sql.Statement
 @Stepwise
 class PersonRepositorySpec extends Specification {
 
+    @Shared Connection conn
+
+    def setupSpec() {
+        String url = "jdbc:postgresql://localhost/test"
+        Properties props = new Properties()
+        props.setProperty("user", "test")
+        props.setProperty("password", "test")
+        conn = DriverManager.getConnection(url, props)
+    }
+
+    def cleanupSpec() {
+        conn.close()
+    }
+
     @Inject
     PersonRepository personRepository
 
     def "Setup database"() {
         given:
-        String url = "jdbc:postgresql://localhost/test"
-        Properties props = new Properties()
-        props.setProperty("user", "test")
-        props.setProperty("password", "test")
-        Connection conn = DriverManager.getConnection(url, props)
-
         Statement stmt = conn.createStatement()
         stmt.execute("DROP TABLE IF EXISTS persons")
         stmt.execute("CREATE TABLE IF NOT EXISTS persons (id SERIAL, name text)")
-        conn.close()
 
         expect:
         true
