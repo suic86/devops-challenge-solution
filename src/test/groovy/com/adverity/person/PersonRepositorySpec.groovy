@@ -18,6 +18,7 @@ import java.sql.Statement
 class PersonRepositorySpec extends Specification {
 
     @Shared Connection conn
+    @Shared Statement sql
 
     def setupSpec() {
         String url = "jdbc:postgresql://localhost/test"
@@ -25,24 +26,18 @@ class PersonRepositorySpec extends Specification {
         props.setProperty("user", "test")
         props.setProperty("password", "test")
         conn = DriverManager.getConnection(url, props)
+        sql = conn.createStatement()
+        sql.execute("DROP TABLE IF EXISTS persons")
+        sql.execute("CREATE TABLE IF NOT EXISTS persons (id SERIAL, name text)")
     }
 
     def cleanupSpec() {
+        sql.execute("DROP TABLE IF EXISTS persons")
         conn.close()
     }
 
     @Inject
     PersonRepository personRepository
-
-    def "Setup database"() {
-        given:
-        Statement stmt = conn.createStatement()
-        stmt.execute("DROP TABLE IF EXISTS persons")
-        stmt.execute("CREATE TABLE IF NOT EXISTS persons (id SERIAL, name text)")
-
-        expect:
-        true
-    }
 
     /**
      * DO NOT MODIFY THIS TEST
