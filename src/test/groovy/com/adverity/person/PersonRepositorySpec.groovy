@@ -8,7 +8,6 @@ import spock.lang.Stepwise
 import spock.lang.Unroll
 import spock.lang.Shared
 
-import javax.inject.Inject
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.Statement
@@ -19,25 +18,43 @@ class PersonRepositorySpec extends Specification {
 
     @Shared Connection conn
     @Shared Statement sql
+    @Shared String db
 
     def setupSpec() {
-        String url = "jdbc:postgresql://localhost/test"
+        String url = "jdbc:postgresql://localhost/"
+        db = "db" + UUID.randomUUID().toString().replace("-", "")
         Properties props = new Properties()
         props.setProperty("user", "test")
         props.setProperty("password", "test")
+
         conn = DriverManager.getConnection(url, props)
         sql = conn.createStatement()
-        sql.execute("DROP TABLE IF EXISTS persons")
+        sql.executeUpdate("CREATE DATABASE ${db}")
+        sql.close()
+        conn.close()
+
+        conn = DriverManager.getConnection("${url}${db}")
+        sql = conn.createStatement()
         sql.execute("CREATE TABLE IF NOT EXISTS persons (id SERIAL, name text)")
     }
 
     def cleanupSpec() {
-        sql.execute("DROP TABLE IF EXISTS persons")
+        sql.close()
+        conn.close()
+
+        String url = "jdbc:postgresql://localhost/"
+        Properties props = new Properties()
+        props.setProperty("user", "test")
+        props.setProperty("password", "test")
+
+        conn = DriverManager.getConnection(url, props)
+        sql = conn.createStatement()
+        sql.executeUpdate("DROP DATABASE ${db}")
+        sql.close()
         conn.close()
     }
 
-    @Inject
-    PersonRepository personRepository
+    PersonRepository personRepository = new PersonRepositoryImpl(conn)
 
     /**
      * DO NOT MODIFY THIS TEST
